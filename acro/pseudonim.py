@@ -23,9 +23,9 @@ class Ui_Form(object):
         self.stones = QtWidgets.QSpinBox(self.verticalLayoutWidget)
         self.stones.setObjectName("stones")
         self.horizontalLayout.addWidget(self.stones)
-        self.setButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.setButton.setObjectName("setButton")
-        self.horizontalLayout.addWidget(self.setButton)
+        self.startButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.startButton.setObjectName("startButton")
+        self.horizontalLayout.addWidget(self.startButton)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.remainLcd = QtWidgets.QLCDNumber(self.verticalLayoutWidget)
         self.remainLcd.setObjectName("remainLcd")
@@ -61,7 +61,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "Stones:"))
-        self.setButton.setText(_translate("Form", "Set"))
+        self.startButton.setText(_translate("Form", "Set"))
         self.label_2.setText(_translate("Form", "Take amount"))
         self.takeButton.setText(_translate("Form", "Take"))
         self.resultLabel.setText(_translate("Form", "TextLabel"))
@@ -74,7 +74,7 @@ class Pseudonym(QMainWindow, Ui_Form):
         self.setupUi(self)
         self.resultLabel.clear()
 
-        self.setButton.clicked.connect(self.set)
+        self.startButton.clicked.connect(self.set)
         self.takeButton.clicked.connect(self.take)
 
 
