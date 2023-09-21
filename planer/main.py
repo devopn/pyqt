@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow
 import sys
 
 
@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
 
 
 class MyNotes(QMainWindow, Ui_MainWindow):
-
+    count = 0
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -61,13 +61,14 @@ class MyNotes(QMainWindow, Ui_MainWindow):
         self.addButton.clicked.connect(self.addEvent)
 
     def addEvent(self):
-        self.listWidget.addItem(self.calendarWidget.selectedDate().toString() + " " + self.timeEdit.text() + " " + self.lineEdit.text())
+        self.count += 1
+        date = self.calendarWidget.selectedDate().toString()
+        self.listWidget.addItem(date + " " + self.timeEdit.text() + " " + self.lineEdit.text())
         self.sortEvents()
-        print(QListWidget.items(self.listWidget))
 
     def sortEvents(self):
-        # all_items = self.listWidget.items(self)
-        # print(all_items)
+        events = [self.listWidget.item(i) for i in range(self.count)]
+        print(events)
         self.listWidget.sortItems()
 
 
