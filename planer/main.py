@@ -1,79 +1,32 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow
-import sys
+def calculate_order_cost(menu, orders):
+    total_cost = 0
+    for i, order in enumerate(orders):
+        if order:  # Если заказ не пустой
+            flavor, quantity = order.split('\t')
+            cost = int(menu[flavor]) * int(quantity)
+            total_cost += cost
+            print(f"({i + 1}) {flavor}: {cost}")
+    return total_cost
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1050, 700)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 1030, 650))
-        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.timeEdit = QtWidgets.QTimeEdit(self.horizontalLayoutWidget)
-        self.timeEdit.setObjectName("timeEdit")
-        self.timeEdit.setDisplayFormat("HH:mm")
-        self.verticalLayout.addWidget(self.timeEdit)
-        self.calendarWidget = QtWidgets.QCalendarWidget(self.horizontalLayoutWidget)
-        self.calendarWidget.setObjectName("calendarWidget")
-        self.verticalLayout.addWidget(self.calendarWidget)
-        self.lineEdit = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
-        self.lineEdit.setObjectName("lineEdit")
-        self.verticalLayout.addWidget(self.lineEdit)
-        self.addButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.addButton.setObjectName("addButton")
-        self.verticalLayout.addWidget(self.addButton)
-        self.horizontalLayout.addLayout(self.verticalLayout)
-        self.listWidget = QtWidgets.QListWidget(self.horizontalLayoutWidget)
-        self.listWidget.setObjectName("listWidget")
-        self.horizontalLayout.addWidget(self.listWidget)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 642, 24))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+def main():
+    menu = {}
+    orders = []
+    while True:
+        line = input()
+        if line == '.':  # Конец ввода
+            break
+        elif line == '------------------------':  # Разделитель между меню и заказами
+            continue
+        elif '\t' in line:  # Если это строка меню
+            flavor, price = line.split('\t')
+            menu[flavor] = price
+        else:  # Заказы
+            orders.append(line)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.addButton.setText(_translate("MainWindow", "Add"))
+    total_cost = calculate_order_cost(menu, orders)
+    print("Итого:", total_cost)
 
 
-class MyNotes(QMainWindow, Ui_MainWindow):
-    count = 0
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-        
-        self.addButton.clicked.connect(self.addEvent)
-
-    def addEvent(self):
-        self.count += 1
-        date = self.calendarWidget.selectedDate().toString()
-        self.listWidget.addItem(date + " " + self.timeEdit.text() + " " + self.lineEdit.text())
-        self.sortEvents()
-
-    def sortEvents(self):
-        events = [self.listWidget.item(i) for i in range(self.count)]
-        print(events)
-        self.listWidget.sortItems()
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ex = MyNotes()
-    ex.show()
-    sys.exit(app.exec_())
+if __name__ == '__main__':
+    main()

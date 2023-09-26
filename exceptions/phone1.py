@@ -18,7 +18,7 @@ def except_found(num: str):
     for i in range(1, len(num) - 1):
         if (num[i] == ")") and (num[i - 1] == ")"):
             return False
-        
+
     for i in range(1, len(num) - 1):
         if (num[i] == "(") and (num[i - 1] == "("):
             return False
